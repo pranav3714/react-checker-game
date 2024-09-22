@@ -8,15 +8,21 @@ import {
   showPositionForEachBlock,
 } from "utils/constants";
 import { PieceSide, PieceState } from "utils/enums";
-import { isWithinBounds } from "utils/helper";
+import { hasSomebodyWon, isWithinBounds } from "utils/helper";
 import { Position } from "utils/types";
 import ColoredPiece from "components/ColoredPiece";
+import GameConclusion from "components/GameConclusion";
 
-const Board: React.FC<BoardProps> = ({ boardResetCounter, setPlayer }) => {
-  const [boardState, setBoardState] = useState(initialBoardState);
+const Board: React.FC<BoardProps> = ({
+  boardResetCounter,
+  setPlayer,
+  boardState,
+  setBoardState,
+}) => {
   const [highlighted, setHighlighted] = useState<Position[]>([]);
   const [currentTurn, setCurrentTurn] = useState(PieceSide.Bottom);
   const [activePiece, setActivePiece] = useState<null | Position>(null);
+  const [gameConclusion, setGameConclusion] = useState<null | PieceSide>(null);
 
   // deciding factor for rendering block color
   const isDarkSquare = (row: number, col: number) => {
@@ -30,7 +36,13 @@ const Board: React.FC<BoardProps> = ({ boardResetCounter, setPlayer }) => {
     setActivePiece(null);
     setCurrentTurn(PieceSide.Bottom);
     setPlayer(PieceSide.Bottom);
-  }, [setPlayer]);
+  }, [setPlayer, setBoardState]);
+
+  // called when user wins and wants to retry
+  const retryHandler = () => {
+    resetBoard();
+    setGameConclusion(null);
+  };
 
   // called when player selects a piece to move
   const pieceClickHandler = (p: Position) => {
@@ -118,8 +130,18 @@ const Board: React.FC<BoardProps> = ({ boardResetCounter, setPlayer }) => {
     resetBoard();
   }, [boardResetCounter, resetBoard]);
 
+  useEffect(() => {
+    const winner = hasSomebodyWon(boardState);
+    if (winner) {
+      setGameConclusion(winner);
+    }
+  }, [boardState]);
+
   return (
-    <>
+    <div className="w-[50vw] h-[50vw] grid grid-cols-8 grid-rows-8 rounded-md overflow-hidden relative">
+      {gameConclusion && (
+        <GameConclusion winner={gameConclusion} retryHandler={retryHandler} />
+      )}
       {Array.from({ length: boardSize * boardSize }, (_, i) => {
         const row = Math.floor(i / boardSize);
         const col = i % boardSize;
@@ -178,7 +200,7 @@ const Board: React.FC<BoardProps> = ({ boardResetCounter, setPlayer }) => {
           </div>
         );
       })}
-    </>
+    </div>
   );
 };
 

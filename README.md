@@ -31,3 +31,17 @@ Follow these simple steps to get started with a local version of Checker:
    ```bash
    http://localhost:3000
    ```
+
+## Game rules
+
+1. The game is played on an 8x8 board with dark and light squares.
+2. Each player starts with 12 pieces on dark squares (first and last 3 rows).
+3. Pieces can only move forward diagonally.
+4. A piece can capture an opponent’s piece by ‘jumping’ over it. This can only be done if there is no piece of either player on the other side.
+5. After a player has moved the other player can move his pieces.
+6. The game is over when one player has no more pieces.
+
+
+## Todo
+1. Alert when a user wins
+2. A piece becomes a ‘king’ when it reaches the other side. It can then move backwards and forwards.

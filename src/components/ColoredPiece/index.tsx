@@ -7,7 +7,7 @@ import {
   showPositionForEachBlock,
 } from "utils/constants";
 import { ColoredChipProps } from "./IColoredPieceProps";
-import { ChipSide, PieceState } from "utils/enums";
+import { PieceSide, PieceState } from "utils/enums";
 import { isWithinBounds } from "utils/helper";
 
 const ColoredPiece: React.FC<ColoredChipProps> = ({
@@ -71,7 +71,7 @@ const ColoredPiece: React.FC<ColoredChipProps> = ({
   return (
     <div
       className={`w-full h-full rounded-full flex justify-center items-center ${
-        ChipSide.Top === side ? "bg-black" : "bg-red-500"
+        PieceSide.Top === side ? "bg-black" : "bg-red-500"
       } ${hasValidMoves() ? "cursor-pointer" : "cursor-not-allowed"}`}
       onClick={
         hasValidMoves() ? () => onPieceClick({ row, col, side }) : () => {}

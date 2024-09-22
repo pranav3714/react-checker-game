@@ -1,4 +1,4 @@
-import { ChipSide } from "./enums";
+import { PieceSide } from "./enums";
 import { Piece } from "./types";
 
 const initialBoardState: Piece[][] = [
@@ -22,7 +22,7 @@ const initialBoardState: Piece[][] = [
     [1, -1, 1, -1, 0, -1, 1, -1],
   ],
   playerSidePossibleMoves = {
-    [ChipSide.Top]: [
+    [PieceSide.Top]: [
       {
         row: 1,
         col: 1,
@@ -32,7 +32,7 @@ const initialBoardState: Piece[][] = [
         col: -1,
       },
     ],
-    [ChipSide.Bottom]: [
+    [PieceSide.Bottom]: [
       {
         row: -1,
         col: -1,
@@ -44,8 +44,8 @@ const initialBoardState: Piece[][] = [
     ],
   },
   enemy = {
-    [ChipSide.Top]: ChipSide.Bottom,
-    [ChipSide.Bottom]: ChipSide.Top,
+    [PieceSide.Top]: PieceSide.Bottom,
+    [PieceSide.Bottom]: PieceSide.Top,
   },
   showPositionForEachBlock = false,
   boardSize = 8;

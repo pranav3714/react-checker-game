@@ -7,7 +7,7 @@ import {
   playerSidePossibleMoves,
   showPositionForEachBlock,
 } from "utils/constants";
-import { ChipSide, PieceState } from "utils/enums";
+import { PieceSide, PieceState } from "utils/enums";
 import { isWithinBounds } from "utils/helper";
 import { Position } from "utils/types";
 import ColoredPiece from "components/ColoredPiece";
@@ -15,7 +15,7 @@ import ColoredPiece from "components/ColoredPiece";
 const Board: React.FC<BoardProps> = ({ boardResetCounter, setPlayer }) => {
   const [boardState, setBoardState] = useState(initialBoardState);
   const [highlighted, setHighlighted] = useState<Position[]>([]);
-  const [currentTurn, setCurrentTurn] = useState(ChipSide.Bottom);
+  const [currentTurn, setCurrentTurn] = useState(PieceSide.Bottom);
   const [activePiece, setActivePiece] = useState<null | Position>(null);
 
   // deciding factor for rendering block color
@@ -28,8 +28,8 @@ const Board: React.FC<BoardProps> = ({ boardResetCounter, setPlayer }) => {
     setBoardState(initialBoardState);
     setHighlighted([]);
     setActivePiece(null);
-    setCurrentTurn(ChipSide.Bottom);
-    setPlayer(ChipSide.Bottom);
+    setCurrentTurn(PieceSide.Bottom);
+    setPlayer(PieceSide.Bottom);
   }, [setPlayer]);
 
   // called when player selects a piece to move
@@ -146,7 +146,7 @@ const Board: React.FC<BoardProps> = ({ boardResetCounter, setPlayer }) => {
             ) ? (
               <ColoredPiece
                 isKing={boardState[row][col] === PieceState.TopPlayerKing}
-                side={ChipSide.Top}
+                side={PieceSide.Top}
                 key={`${row}${col}`}
                 {...{
                   row,
@@ -162,7 +162,7 @@ const Board: React.FC<BoardProps> = ({ boardResetCounter, setPlayer }) => {
               ].includes(boardState[row][col]) ? (
               <ColoredPiece
                 isKing={boardState[row][col] === PieceState.BottomPlayerKing}
-                side={ChipSide.Bottom}
+                side={PieceSide.Bottom}
                 key={`${row}${col}`}
                 {...{
                   row,

@@ -1,10 +1,10 @@
-import { ChipSide } from "utils/enums";
+import { PieceSide } from "utils/enums";
 import { Piece, Position } from "utils/types";
 
 export interface ColoredChipProps {
   isKing: boolean;
-  side: ChipSide;
-  currentTurn: ChipSide;
+  side: PieceSide;
+  currentTurn: PieceSide;
   row: number;
   col: number;
   boardState: Piece[][];

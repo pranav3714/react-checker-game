@@ -7,7 +7,7 @@ export enum PieceState {
   Unusable = -1,
 }
 
-export enum ChipSide {
+export enum PieceSide {
   Top = 2, // top side player
   Bottom = 1, // bottom side player
 }

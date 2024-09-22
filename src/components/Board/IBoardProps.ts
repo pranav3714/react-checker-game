@@ -1,6 +1,6 @@
-import { ChipSide } from "utils/enums";
+import { PieceSide } from "utils/enums";
 
 export interface BoardProps {
   boardResetCounter: number;
-  setPlayer: (p: ChipSide) => void;
+  setPlayer: (p: PieceSide) => void;
 }

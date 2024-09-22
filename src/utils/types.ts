@@ -1,9 +1,9 @@
-import { ChipSide } from "./enums";
+import { PieceSide } from "./enums";
 
 export type Position = {
   row: number;
   col: number;
-  side: ChipSide;
+  side: PieceSide;
 };
 
 export type Piece = 0 | 1 | 2 | 3 | 4 | -1;

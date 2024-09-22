@@ -1,16 +1,16 @@
 import { useCallback, useState } from "react";
 import Board from "./components/Board";
-import { ChipSide } from "./utils/enums";
+import { PieceSide } from "./utils/enums";
 
 function App() {
   const [resetBoardCounter, setResetBoardCounter] = useState<number>(0);
-  const [activePlayer, setActivePlayer] = useState(ChipSide.Bottom);
+  const [activePlayer, setActivePlayer] = useState(PieceSide.Bottom);
 
   const handleCounterUpdate = () => {
     setResetBoardCounter((cur) => cur + 1);
   };
 
-  const setPlayer = useCallback((player: ChipSide) => {
+  const setPlayer = useCallback((player: PieceSide) => {
     setActivePlayer(player);
   }, []);
 
@@ -30,7 +30,7 @@ function App() {
           Reset Board
         </button>
         <p className="grid-cols-5">
-          {activePlayer === ChipSide.Top ? "Black's Turn" : "Red's turn"}
+          {activePlayer === PieceSide.Top ? "Black's Turn" : "Red's turn"}
         </p>
       </div>
     </div>

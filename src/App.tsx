@@ -1,24 +1,38 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { useCallback, useState } from "react";
+import Board from "./components/Board";
+import { ChipSide } from "./utils/enums";
 
 function App() {
+  const [resetBoardCounter, setResetBoardCounter] = useState<number>(0);
+  const [activePlayer, setActivePlayer] = useState(ChipSide.Bottom);
+
+  const handleCounterUpdate = () => {
+    setResetBoardCounter((cur) => cur + 1);
+  };
+
+  const setPlayer = useCallback((player: ChipSide) => {
+    setActivePlayer(player);
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
+    <div className="flex p-4 min-h-screen">
+      <div
+        id="board"
+        className="w-[50vw] h-[50vw] bg-green-500 grid grid-cols-8 grid-rows-8"
+      >
+        <Board boardResetCounter={resetBoardCounter} setPlayer={setPlayer} />
+      </div>
+      <div className="p-4">
+        <button
+          onClick={handleCounterUpdate}
+          className="bg-red-500 p-4 rounded-md text-white"
         >
-          Learn React
-        </a>
-      </header>
+          Reset Board
+        </button>
+        <p className="grid-cols-5">
+          {activePlayer === ChipSide.Top ? "Black's Turn" : "Red's turn"}
+        </p>
+      </div>
     </div>
   );
 }

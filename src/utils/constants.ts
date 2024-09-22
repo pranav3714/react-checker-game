@@ -47,11 +47,16 @@ const initialBoardState: Piece[][] = [
     [PieceSide.Top]: PieceSide.Bottom,
     [PieceSide.Bottom]: PieceSide.Top,
   },
+  sideColor = {
+    [PieceSide.Top]: "bg-black",
+    [PieceSide.Bottom]: "bg-red-500",
+  },
   showPositionForEachBlock = false,
   boardSize = 8;
 
 export {
   enemy,
+  sideColor,
   boardSize,
   initialBoardState,
   doubleJumpPossible,

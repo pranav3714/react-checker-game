@@ -1,8 +1,12 @@
 import { useCallback, useState } from "react";
 import Board from "./components/Board";
 import { PieceSide } from "./utils/enums";
+import { initialBoardState } from "utils/constants";
+import ResetButton from "components/ResetButton";
+import ActivePlayerHighlighter from "components/ActivePlayerHighlighter";
 
 function App() {
+  const [boardState, setBoardState] = useState(initialBoardState);
   const [resetBoardCounter, setResetBoardCounter] = useState<number>(0);
   const [activePlayer, setActivePlayer] = useState(PieceSide.Bottom);
 
@@ -15,23 +19,16 @@ function App() {
   }, []);
 
   return (
-    <div className="flex p-4 min-h-screen">
-      <div
-        id="board"
-        className="w-[50vw] h-[50vw] bg-green-500 grid grid-cols-8 grid-rows-8"
-      >
-        <Board boardResetCounter={resetBoardCounter} setPlayer={setPlayer} />
-      </div>
-      <div className="p-4">
-        <button
-          onClick={handleCounterUpdate}
-          className="bg-red-500 p-4 rounded-md text-white"
-        >
-          Reset Board
-        </button>
-        <p className="grid-cols-5">
-          {activePlayer === PieceSide.Top ? "Black's Turn" : "Red's turn"}
-        </p>
+    <div className="flex min-h-screen w-full p-4">
+      <Board
+        boardResetCounter={resetBoardCounter}
+        setPlayer={setPlayer}
+        boardState={boardState}
+        setBoardState={setBoardState}
+      />
+      <div className="px-4 flex flex-col gap-3">
+        <ResetButton handleCounterUpdate={handleCounterUpdate} />
+        <ActivePlayerHighlighter activePlayer={activePlayer} />
       </div>
     </div>
   );

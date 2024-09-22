@@ -40,8 +40,8 @@ Follow these simple steps to get started with a local version of Checker:
 4. A piece can capture an opponent’s piece by ‘jumping’ over it. This can only be done if there is no piece of either player on the other side.
 5. After a player has moved the other player can move his pieces.
 6. The game is over when one player has no more pieces.
+7. Alert when a user wins
 
 
 ## Todo
-1. Alert when a user wins
-2. A piece becomes a ‘king’ when it reaches the other side. It can then move backwards and forwards.
+1. A piece becomes a ‘king’ when it reaches the other side. It can then move backwards and forwards.

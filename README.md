@@ -3,6 +3,8 @@
 ## Introduction
 
 Checker game built using React and TailwindCSS
+<br />
+[Watch the demo video](https://drive.google.com/file/d/1k6on_OCCWZ2PjEo7vn6kdXp8MMD7zpqC/view)
 
 ## Setup
 

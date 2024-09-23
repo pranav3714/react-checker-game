@@ -5,6 +5,7 @@ import {
   boardSize,
   playerSidePossibleMoves,
   showPositionForEachBlock,
+  sideKing,
 } from "utils/constants";
 import { ColoredChipProps } from "./IColoredPieceProps";
 import { PieceSide, PieceState } from "utils/enums";
@@ -18,6 +19,7 @@ const ColoredPiece: React.FC<ColoredChipProps> = ({
   boardState,
   currentTurn,
   onPieceClick,
+  pieceValue,
 }) => {
   // Checks if the current piece has any valid moves for the player
   const hasValidMoves = (): boolean => {
@@ -25,10 +27,13 @@ const ColoredPiece: React.FC<ColoredChipProps> = ({
     if (side !== currentTurn) {
       return false;
     }
+    if (pieceValue === PieceState.Empty || pieceValue === PieceState.Unusable) {
+      return false;
+    }
 
     // Calculate all possible moves for the player's side
     // Map each possible move direction (row and col additions) to the new board position
-    const allPossibleMoves = playerSidePossibleMoves[side]
+    const allPossibleMoves = playerSidePossibleMoves[pieceValue]
       .map(({ row: rowAdd, col: colAdd }) => [
         row + rowAdd, // new row position
         col + colAdd, // new column position
@@ -51,7 +56,11 @@ const ColoredPiece: React.FC<ColoredChipProps> = ({
       }
 
       // Check if the destination square has an enemy piece (jump possibility)
-      if (boardState[move[0]][move[1]] === enemy[side]) {
+      if (
+        [enemy[side], sideKing[enemy[side]]].includes(
+          boardState[move[0]][move[1]]
+        )
+      ) {
         const jumpRow = move[0] + move[2]; // Calculate row after jump
         const jumpCol = move[1] + move[3]; // Calculate column after jump
 
@@ -74,7 +83,9 @@ const ColoredPiece: React.FC<ColoredChipProps> = ({
         PieceSide.Top === side ? "bg-black" : "bg-red-500"
       } ${hasValidMoves() ? "cursor-pointer" : "cursor-not-allowed"}`}
       onClick={
-        hasValidMoves() ? () => onPieceClick({ row, col, side }) : () => {}
+        hasValidMoves()
+          ? () => onPieceClick({ row, col, side, pieceValue })
+          : () => {}
       }
     >
       {isKing ? <img src={logo} alt="king-highlighter" /> : null}

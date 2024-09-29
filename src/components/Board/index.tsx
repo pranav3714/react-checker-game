@@ -6,6 +6,8 @@ import {
   initialBoardState,
   playerSidePossibleMoves,
   showPositionForEachBlock,
+  royalRow,
+  sideKing,
 } from "utils/constants";
 import { PieceSide, PieceState } from "utils/enums";
 import { hasSomebodyWon, isWithinBounds } from "utils/helper";
@@ -54,7 +56,11 @@ const Board: React.FC<BoardProps> = ({
     if (!activePiece) return;
     setBoardState((curBoardState) => {
       const hardCopy = curBoardState.map((fullRow) => [...fullRow]);
-      hardCopy[row][col] = activePiece.side;
+      if (row === royalRow[activePiece.side]) {
+        hardCopy[row][col] = sideKing[activePiece.side];
+      } else {
+        hardCopy[row][col] = activePiece.pieceValue;
+      }
       hardCopy[activePiece.row][activePiece.col] = PieceState.Empty;
 
       // diff between previous piece state and the latest piece state
@@ -79,7 +85,14 @@ const Board: React.FC<BoardProps> = ({
   // detect if bock contains opponent piece
   const isOpponentPiece = useCallback(
     (row: number, col: number): boolean => {
-      if (boardState[row][col] === enemy[currentTurn]) return true;
+      // [enemy[side], sideKing[enemy[side]]]
+      // if (boardState[row][col] === enemy[currentTurn]) return true;
+      if (
+        [enemy[currentTurn], sideKing[enemy[currentTurn]]].includes(
+          boardState[row][col]
+        )
+      )
+        return true;
       return false;
     },
     [boardState, currentTurn]
@@ -90,7 +103,13 @@ const Board: React.FC<BoardProps> = ({
     (p: Position) => {
       if (!p) return;
       const validMoves: Position[] = [];
-      playerSidePossibleMoves[p.side].forEach(
+      if (
+        p.pieceValue === PieceState.Empty ||
+        p.pieceValue === PieceState.Unusable
+      ) {
+        return false;
+      }
+      playerSidePossibleMoves[p.pieceValue].forEach(
         ({ row: rowDir, col: colDir }) => {
           const newRow = p.row + rowDir;
           const newCol = p.col + colDir;
@@ -99,7 +118,12 @@ const Board: React.FC<BoardProps> = ({
           // Ensure move is within bounds and on a valid block
           if (isWithinBounds(newRow, newCol)) {
             if (boardState[newRow][newCol] === PieceState.Empty) {
-              validMoves.push({ row: newRow, col: newCol, side: p.side });
+              validMoves.push({
+                row: newRow,
+                col: newCol,
+                side: p.side,
+                pieceValue: boardState[newRow][newCol],
+              });
             }
             if (
               isWithinBounds(jumpRow, jumpCol) &&
@@ -110,6 +134,7 @@ const Board: React.FC<BoardProps> = ({
                 row: jumpRow,
                 col: jumpCol,
                 side: p.side,
+                pieceValue: boardState[jumpRow][jumpCol],
               });
             }
           }
@@ -176,6 +201,7 @@ const Board: React.FC<BoardProps> = ({
                   boardState,
                   onPieceClick: pieceClickHandler,
                   currentTurn,
+                  pieceValue: boardState[row][col],
                 }}
               />
             ) : [
@@ -192,6 +218,7 @@ const Board: React.FC<BoardProps> = ({
                   boardState,
                   onPieceClick: pieceClickHandler,
                   currentTurn,
+                  pieceValue: boardState[row][col],
                 }}
               />
             ) : showPositionForEachBlock ? (

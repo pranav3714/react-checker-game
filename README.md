@@ -3,6 +3,8 @@
 ## Introduction
 
 Checker game built using React and TailwindCSS
+<br />
+[Watch the demo video](https://drive.google.com/file/d/1k6on_OCCWZ2PjEo7vn6kdXp8MMD7zpqC/view)
 
 ## Setup
 
@@ -41,7 +43,8 @@ Follow these simple steps to get started with a local version of Checker:
 5. After a player has moved the other player can move his pieces.
 6. The game is over when one player has no more pieces.
 7. Alert when a user wins
-
+8. A piece becomes a ‘king’ when it reaches the other side. It can then move backwards and forwards.
 
 ## Todo
-1. A piece becomes a ‘king’ when it reaches the other side. It can then move backwards and forwards.
+
+1. Improve UI

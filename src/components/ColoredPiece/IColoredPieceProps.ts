@@ -1,4 +1,4 @@
-import { PieceSide } from "utils/enums";
+import { PieceSide, PieceState } from "utils/enums";
 import { Piece, Position } from "utils/types";
 
 export interface ColoredChipProps {
@@ -9,4 +9,5 @@ export interface ColoredChipProps {
   col: number;
   boardState: Piece[][];
   onPieceClick: (p: Position) => void;
+  pieceValue: PieceState;
 }

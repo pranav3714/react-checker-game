@@ -2,10 +2,10 @@ import React from "react";
 import logo from "assets/logo.svg";
 import {
   enemy,
-  boardSize,
-  playerSidePossibleMoves,
-  showPositionForEachBlock,
   sideKing,
+  boardSize,
+  pieceBelongsToSide,
+  playerSidePossibleMoves,
 } from "utils/constants";
 import { ColoredChipProps } from "./IColoredPieceProps";
 import { PieceSide, PieceState } from "utils/enums";
@@ -14,23 +14,25 @@ import { isWithinBounds } from "utils/helper";
 const ColoredPiece: React.FC<ColoredChipProps> = ({
   col,
   row,
-  side,
-  isKing,
   boardState,
   currentTurn,
   onPieceClick,
   pieceValue,
 }) => {
+  const side =
+    pieceBelongsToSide[pieceValue as keyof typeof pieceBelongsToSide];
+  if (!side) {
+    return <></>;
+  }
   // Checks if the current piece has any valid moves for the player
   const hasValidMoves = (): boolean => {
-    // If it's not the player's turn, this piece can't be moved
-    if (side !== currentTurn) {
-      return false;
-    }
     if (pieceValue === PieceState.Empty || pieceValue === PieceState.Unusable) {
       return false;
     }
-
+    // If it's not the player's turn, this piece can't be moved
+    if (pieceBelongsToSide[pieceValue] !== currentTurn) {
+      return false;
+    }
     // Calculate all possible moves for the player's side
     // Map each possible move direction (row and col additions) to the new board position
     const allPossibleMoves = playerSidePossibleMoves[pieceValue]
@@ -88,11 +90,10 @@ const ColoredPiece: React.FC<ColoredChipProps> = ({
           : () => {}
       }
     >
-      {isKing ? <img src={logo} alt="king-highlighter" /> : null}
-      {showPositionForEachBlock ? (
-        <p className="text-white">
-          {row}-{col}
-        </p>
+      {[PieceState.TopPlayerKing, PieceState.BottomPlayerKing].includes(
+        pieceValue
+      ) ? (
+        <img src={logo} alt="king-highlighter" />
       ) : null}
     </div>
   );

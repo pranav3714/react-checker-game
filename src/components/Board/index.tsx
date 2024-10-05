@@ -2,12 +2,11 @@ import { useCallback, useEffect, useState } from "react";
 import { BoardProps } from "./IBoardProps";
 import {
   enemy,
+  sideKing,
+  royalRow,
   boardSize,
   initialBoardState,
   playerSidePossibleMoves,
-  showPositionForEachBlock,
-  royalRow,
-  sideKing,
 } from "utils/constants";
 import { PieceSide, PieceState } from "utils/enums";
 import { hasSomebodyWon, isWithinBounds } from "utils/helper";
@@ -188,42 +187,17 @@ const Board: React.FC<BoardProps> = ({
                 onClick={() => highlightedBlockClickHandler(row, col)}
               />
             )}
-            {[PieceState.TopPlayerPiece, PieceState.TopPlayerKing].includes(
-              boardState[row][col]
-            ) ? (
-              <ColoredPiece
-                isKing={boardState[row][col] === PieceState.TopPlayerKing}
-                side={PieceSide.Top}
-                key={`${row}${col}`}
-                {...{
-                  row,
-                  col,
-                  boardState,
-                  onPieceClick: pieceClickHandler,
-                  currentTurn,
-                  pieceValue: boardState[row][col],
-                }}
-              />
-            ) : [
-                PieceState.BottomPlayerPiece,
-                PieceState.BottomPlayerKing,
-              ].includes(boardState[row][col]) ? (
-              <ColoredPiece
-                isKing={boardState[row][col] === PieceState.BottomPlayerKing}
-                side={PieceSide.Bottom}
-                key={`${row}${col}`}
-                {...{
-                  row,
-                  col,
-                  boardState,
-                  onPieceClick: pieceClickHandler,
-                  currentTurn,
-                  pieceValue: boardState[row][col],
-                }}
-              />
-            ) : showPositionForEachBlock ? (
-              `${row}-${col}`
-            ) : null}
+            <ColoredPiece
+              {...{
+                key: `${row}${col}`,
+                row,
+                col,
+                boardState,
+                currentTurn,
+                onPieceClick: pieceClickHandler,
+                pieceValue: boardState[row][col],
+              }}
+            />
           </div>
         );
       })}

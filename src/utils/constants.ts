@@ -12,26 +12,6 @@ const boardSize = 8,
     [-1, 1, -1, 1, -1, 1, -1, 1], // Row 6 (Player 1)
     [1, -1, 1, -1, 1, -1, 1, -1], // Row 7 (Player 1)
   ],
-  doubleJumpPossible: Piece[][] = [
-    [-1, 0, -1, 2, -1, 2, -1, 2],
-    [2, -1, 2, -1, 2, -1, 2, -1],
-    [-1, 2, -1, 0, -1, 0, -1, 2],
-    [2, -1, 2, -1, 2, -1, 0, -1],
-    [-1, 1, -1, 0, -1, 1, -1, 0],
-    [1, -1, 1, -1, 1, -1, 1, -1],
-    [-1, 1, -1, 1, -1, 0, -1, 1],
-    [1, -1, 1, -1, 0, -1, 1, -1],
-  ],
-  kingState: Piece[][] = [
-    [-1, 2, -1, 2, -1, 2, -1, 2],
-    [2, -1, 0, -1, 0, -1, 0, -1],
-    [-1, 2, -1, 0, -1, 0, -1, 2],
-    [0, -1, 0, -1, 0, -1, 2, -1],
-    [-1, 0, -1, 0, -1, 0, -1, 1],
-    [2, -1, 0, -1, 1, -1, 0, -1],
-    [-1, 0, -1, 1, -1, 0, -1, 1],
-    [1, -1, 3, -1, 1, -1, 1, -1],
-  ],
   kingMoves = [
     {
       row: 1,
@@ -90,17 +70,20 @@ const boardSize = 8,
     [PieceSide.Top]: PieceState.TopPlayerKing,
     [PieceSide.Bottom]: PieceState.BottomPlayerKing,
   },
-  showPositionForEachBlock = false;
+  pieceBelongsToSide = {
+    [PieceState.TopPlayerPiece]: PieceSide.Top,
+    [PieceState.TopPlayerKing]: PieceSide.Top,
+    [PieceState.BottomPlayerPiece]: PieceSide.Bottom,
+    [PieceState.BottomPlayerKing]: PieceSide.Bottom,
+  };
 
 export {
   enemy,
   royalRow,
   sideKing,
-  kingState,
-  sideColor,
   boardSize,
+  sideColor,
   initialBoardState,
-  doubleJumpPossible,
+  pieceBelongsToSide,
   playerSidePossibleMoves,
-  showPositionForEachBlock,
 };

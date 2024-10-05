@@ -11,3 +11,8 @@ export enum PieceSide {
   Top = 2, // top side player
   Bottom = 1, // bottom side player
 }
+
+export enum SquareColor {
+  Dark = "bg-yellow-900",
+  Light = "bg-yellow-600",
+}

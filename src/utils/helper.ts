@@ -1,6 +1,8 @@
 import { boardSize } from "./constants";
 import { PieceSide, PieceState } from "./enums";
 import { Piece } from "./types";
+// not splitting this file as the number of functions are too low
+// in future split each function into separate file
 
 export const isWithinBounds = (row: number, col: number): boolean => {
   return row >= 0 && row < boardSize && col >= 0 && col < boardSize;
@@ -38,4 +40,9 @@ export const hasSomebodyWon = (boardState: Piece[][]): number | null => {
   }
   // If both players still have pieces, the game is not over
   return null;
+};
+
+// deciding factor for rendering block color
+export const isDarkSquare = (row: number, col: number) => {
+  return (row + col) % 2 === 1;
 };

@@ -3,13 +3,16 @@ import { BoardProps } from "./IBoardProps";
 import {
   enemy,
   sideKing,
-  royalRow,
   boardSize,
   initialBoardState,
   playerSidePossibleMoves,
 } from "utils/constants";
 import { PieceSide, PieceState } from "utils/enums";
-import { hasSomebodyWon, isWithinBounds } from "utils/helper";
+import {
+  getNewBoardStateAfterTheMove,
+  hasSomebodyWon,
+  isWithinBounds,
+} from "utils/helper";
 import { Position } from "utils/types";
 import ColoredPiece from "components/ColoredPiece";
 import GameConclusion from "components/GameConclusion";
@@ -53,28 +56,9 @@ const Board: React.FC<BoardProps> = ({
   // called when player clicks a highlighted block for a possible move
   const highlightedBlockClickHandler = (row: number, col: number) => {
     if (!activePiece) return;
-    setBoardState((curBoardState) => {
-      const hardCopy = curBoardState.map((fullRow) => [...fullRow]);
-      if (row === royalRow[activePiece.side]) {
-        hardCopy[row][col] = sideKing[activePiece.side];
-      } else {
-        hardCopy[row][col] = activePiece.pieceValue;
-      }
-      hardCopy[activePiece.row][activePiece.col] = PieceState.Empty;
-
-      // diff between previous piece state and the latest piece state
-      const rowDiff = row - activePiece.row;
-      const colDiff = col - activePiece.col;
-      // Check if the move was a jump (capture)
-      if (Math.abs(rowDiff) === 2 && Math.abs(colDiff) === 2) {
-        // Calculate the position of the opponent piece
-        const jumpedRow = activePiece.row + rowDiff / 2;
-        const jumpedCol = activePiece.col + colDiff / 2;
-        // Set the opponent piece to empty
-        hardCopy[jumpedRow][jumpedCol] = PieceState.Empty;
-      }
-      return hardCopy;
-    });
+    setBoardState((curBoardState) =>
+      getNewBoardStateAfterTheMove(curBoardState, activePiece, row, col)
+    );
     setHighlighted([]);
     setActivePiece(null);
     setCurrentTurn(enemy[activePiece.side]);
@@ -86,13 +70,9 @@ const Board: React.FC<BoardProps> = ({
     (row: number, col: number): boolean => {
       // [enemy[side], sideKing[enemy[side]]]
       // if (boardState[row][col] === enemy[currentTurn]) return true;
-      if (
-        [enemy[currentTurn], sideKing[enemy[currentTurn]]].includes(
-          boardState[row][col]
-        )
-      )
-        return true;
-      return false;
+      return [enemy[currentTurn], sideKing[enemy[currentTurn]]].includes(
+        boardState[row][col]
+      );
     },
     [boardState, currentTurn]
   );
@@ -188,15 +168,13 @@ const Board: React.FC<BoardProps> = ({
               />
             )}
             <ColoredPiece
-              {...{
-                key: `${row}${col}`,
-                row,
-                col,
-                boardState,
-                currentTurn,
-                onPieceClick: pieceClickHandler,
-                pieceValue: boardState[row][col],
-              }}
+              key={`${row}${col}`}
+              row={row}
+              col={col}
+              boardState={boardState}
+              currentTurn={currentTurn}
+              onPieceClick={pieceClickHandler}
+              pieceValue={boardState[row][col]}
             />
           </div>
         );

@@ -1,6 +1,6 @@
-import { boardSize } from "./constants";
+import { boardSize, royalRow, sideKing } from "./constants";
 import { PieceSide, PieceState } from "./enums";
-import { Piece } from "./types";
+import { Piece, Position } from "./types";
 
 export const isWithinBounds = (row: number, col: number): boolean => {
   return row >= 0 && row < boardSize && col >= 0 && col < boardSize;
@@ -38,4 +38,33 @@ export const hasSomebodyWon = (boardState: Piece[][]): number | null => {
   }
   // If both players still have pieces, the game is not over
   return null;
+};
+
+export const getNewBoardStateAfterTheMove = (
+  curBoardState: Piece[][],
+  activePiece: null | Position,
+  row: number,
+  col: number
+) => {
+  if (!activePiece) return curBoardState;
+  const hardCopy = curBoardState.map((fullRow) => [...fullRow]);
+  if (row === royalRow[activePiece.side]) {
+    hardCopy[row][col] = sideKing[activePiece.side];
+  } else {
+    hardCopy[row][col] = activePiece.pieceValue;
+  }
+  hardCopy[activePiece.row][activePiece.col] = PieceState.Empty;
+
+  // diff between previous piece state and the latest piece state
+  const rowDiff = row - activePiece.row;
+  const colDiff = col - activePiece.col;
+  // Check if the move was a jump (capture)
+  if (Math.abs(rowDiff) === 2 && Math.abs(colDiff) === 2) {
+    // Calculate the position of the opponent piece
+    const jumpedRow = activePiece.row + rowDiff / 2;
+    const jumpedCol = activePiece.col + colDiff / 2;
+    // Set the opponent piece to empty
+    hardCopy[jumpedRow][jumpedCol] = PieceState.Empty;
+  }
+  return hardCopy;
 };
